@@ -1,7 +1,8 @@
-package com.springproject.Controller;
+package com.springproject.controller;
 
 import com.springproject.error.CustomErrorType;
 import com.springproject.model.Contact;
+import com.springproject.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,43 +12,41 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("contacts")
 public class ContactController {
 
+    private final ContactRepository dao;
+
     @Autowired
-    public ContactController() {
+    public ContactController(ContactRepository dao) {
+        this.dao = dao;
     }
 
     @GetMapping
     public ResponseEntity<?> listAll() {
-        return new ResponseEntity(Contact.list, HttpStatus.OK);
+        return new ResponseEntity(dao.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getContactById(@PathVariable("id") Long id) {
-        Contact contact = new Contact();
-        contact.setId(id);
-
-        int index = Contact.list.indexOf(contact);
-        if (index == -1) {
+        Contact contact = dao.findOne(id);
+        if (contact == null) {
             return new ResponseEntity(new CustomErrorType("Contact not fund"), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(Contact.list.get(index), HttpStatus.OK);
+        return new ResponseEntity(contact, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Contact contact) {
-        Contact.list.add(contact);
-        return new ResponseEntity(contact, HttpStatus.OK);
+        return new ResponseEntity(dao.save(contact), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> delete(@RequestBody Contact contact) {
-        Contact.list.remove(contact);
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        dao.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Contact contact) {
-        Contact.list.remove(contact);
-        Contact.list.add(contact);
+        dao.save(contact);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

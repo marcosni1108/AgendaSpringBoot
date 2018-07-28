@@ -2,17 +2,17 @@ package com.springproject.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.text.DateFormat;
-import java.util.ArrayList;
+import javax.persistence.Entity;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 
-import static java.util.Arrays.asList;
-
+@Entity
 @Data
-public class Contact {
+@EqualsAndHashCode(callSuper=true)
+public class Contact extends AbstractEntity {
     private Long id;
     private String name;
     private String phoneNumber;
@@ -22,34 +22,4 @@ public class Contact {
     private String state;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private Date birthday;
-    public static List<Contact> list;
-
-    static {
-        contactRepository();
-    }
-
-    public Contact() {
-    }
-
-    public Contact(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    private static void contactRepository(){
-        list = new ArrayList(asList(new Contact(1L,"Marcos"), new Contact(2L,"Maria")));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Contact contact = (Contact) o;
-        return Objects.equals(id, contact.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
