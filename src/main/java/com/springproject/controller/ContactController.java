@@ -33,6 +33,11 @@ public class ContactController {
         return new ResponseEntity(contact, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/findByName/{name}")
+    public ResponseEntity<?> findByName(@PathVariable("name") String name) {
+        return new ResponseEntity(dao.findByNameIgnoreCaseContaining(name), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Contact contact) {
         return new ResponseEntity(dao.save(contact), HttpStatus.OK);
