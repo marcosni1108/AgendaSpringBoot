@@ -1,6 +1,7 @@
 package com.springproject.controller;
 
 import com.springproject.error.CustomErrorType;
+import com.springproject.error.ResourceNotFoundException;
 import com.springproject.model.Contact;
 import com.springproject.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,8 @@ public class ContactController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getContactById(@PathVariable("id") Long id) {
+        verifyIfContactExists(id);
         Contact contact = dao.findOne(id);
-        if (contact == null) {
-            return new ResponseEntity(new CustomErrorType("Contact not fund"), HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity(contact, HttpStatus.OK);
     }
 
@@ -45,13 +44,21 @@ public class ContactController {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
+        verifyIfContactExists(id);
         dao.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Contact contact) {
+        verifyIfContactExists(contact.getId());
         dao.save(contact);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    private void verifyIfContactExists(Long id) {
+        if (dao.findOne(id) == null) {
+            throw new ResourceNotFoundException("Contact not found by ID:" + id);
+        }
     }
 }
