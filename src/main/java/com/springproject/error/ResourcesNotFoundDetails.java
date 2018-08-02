@@ -2,20 +2,7 @@ package com.springproject.error;
 
 import lombok.Getter;
 
-public class ResourcesNotFoundDetails {
-    @Getter
-    private String title;
-    @Getter
-    private int status;
-    @Getter
-    private String detail;
-    @Getter
-    private Long timestamp;
-    @Getter
-    private String developerMessage;
-
-    private ResourcesNotFoundDetails() {
-    }
+public class ResourcesNotFoundDetails extends ErrorDetail {
 
     public static final class Builder {
         private String title;
@@ -58,11 +45,11 @@ public class ResourcesNotFoundDetails {
 
         public ResourcesNotFoundDetails build() {
             ResourcesNotFoundDetails resourcesNotFoundDetails = new ResourcesNotFoundDetails();
-            resourcesNotFoundDetails.title = this.title;
-            resourcesNotFoundDetails.status = this.status;
-            resourcesNotFoundDetails.detail = this.detail;
-            resourcesNotFoundDetails.timestamp = this.timestamp;
-            resourcesNotFoundDetails.developerMessage = this.developerMessage;
+            resourcesNotFoundDetails.setTitle(title);
+            resourcesNotFoundDetails.setStatus(status);
+            resourcesNotFoundDetails.setDetail(detail);
+            resourcesNotFoundDetails.setTimestamp(timestamp);
+            resourcesNotFoundDetails.setDeveloperMessage(developerMessage);
             return resourcesNotFoundDetails;
         }
     }
