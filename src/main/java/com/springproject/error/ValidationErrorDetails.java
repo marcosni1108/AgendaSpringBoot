@@ -2,7 +2,7 @@ package com.springproject.error;
 
 import lombok.Getter;
 
-public class ValidationErrorDetails extends ErrorDetail {
+public class ValidationErrorDetails extends ErrorDetails {
     @Getter
     private String field;
     @Getter

@@ -1,8 +1,6 @@
 package com.springproject.error;
 
-import lombok.Getter;
-
-public class ResourcesNotFoundDetails extends ErrorDetail {
+public class ResourcesNotFoundDetails extends ErrorDetails {
 
     public static final class Builder {
         private String title;
