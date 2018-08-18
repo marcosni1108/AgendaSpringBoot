@@ -25,5 +25,5 @@ public class ContatcUser extends AbstractEntity {
     private String name;
 
     @NotEmpty
-    private Boolean admin;
+    private String roles;
 }
