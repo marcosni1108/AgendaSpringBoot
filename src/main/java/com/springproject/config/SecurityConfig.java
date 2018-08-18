@@ -1,5 +1,6 @@
 package com.springproject.config;
 
+import com.springproject.service.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -11,19 +12,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static final String RULE_USER = "USER";
-    public static final String RULE_ADMIN = "ADMIN";
+    @Autowired
+    private CustomUserDetailService userDetailService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().authenticated().and().httpBasic().and().csrf().disable();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("marcos").password("M@rcos8520").roles(RULE_USER, RULE_ADMIN)
-                .and()
-                .withUser("ze").password("Ze@123").roles(RULE_USER);
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailService);
     }
 }
