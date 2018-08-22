@@ -15,9 +15,11 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+					<executable>true</executable>
                 </configuration>
             </plugin>
         </plugins>
+		<finalName>contacts</finalName>
     </build>
     <packaging>jar</packaging>
     <parent>
