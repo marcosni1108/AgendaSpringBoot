@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ContatcUser extends AbstractEntity {
+public class ContactUser extends AbstractEntity {
 
     @NotEmpty
     @Column(unique = true)
