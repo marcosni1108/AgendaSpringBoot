@@ -6,7 +6,6 @@ import com.springproject.repository.ContactRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,8 +25,8 @@ public class ContactController {
 
     @ApiOperation(value = "Find all contacts")
     @GetMapping
-    public ResponseEntity<?> listAll(Pageable pageable) {
-        return new ResponseEntity(dao.findAll(pageable), HttpStatus.OK);
+    public ResponseEntity<?> listAll() {
+        return new ResponseEntity(dao.findAll(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Find contact by id")
