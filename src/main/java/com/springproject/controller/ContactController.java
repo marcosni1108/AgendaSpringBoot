@@ -3,6 +3,8 @@ package com.springproject.controller;
 import com.springproject.error.ResourceNotFoundException;
 import com.springproject.model.Contact;
 import com.springproject.repository.ContactRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("contacts")
+@Api(value = "Contact", description = "Contact API")
 public class ContactController {
 
     private final ContactRepository dao;
@@ -21,11 +24,13 @@ public class ContactController {
         this.dao = dao;
     }
 
+    @ApiOperation(value = "Find all contacts")
     @GetMapping
     public ResponseEntity<?> listAll(Pageable pageable) {
         return new ResponseEntity(dao.findAll(pageable), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Find contact by id")
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getContactById(@PathVariable("id") Long id) {
         verifyIfContactExists(id);
@@ -33,16 +38,19 @@ public class ContactController {
         return new ResponseEntity(contact, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Find contact by name")
     @GetMapping(path = "/findByName/{name}")
     public ResponseEntity<?> findByName(@PathVariable("name") String name) {
         return new ResponseEntity(dao.findByNameIgnoreCaseContaining(name), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Save contact")
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Contact contact) {
         return new ResponseEntity(dao.save(contact), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Delete contact by id")
     @DeleteMapping(path = "/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
@@ -51,6 +59,7 @@ public class ContactController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Update contact")
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Contact contact) {
         verifyIfContactExists(contact.getId());
